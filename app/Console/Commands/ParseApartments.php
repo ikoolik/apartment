@@ -4,8 +4,10 @@ namespace App\Console\Commands;
 
 use App\Apartment;
 use App\Helpers\FetchDataFromHtml;
+use App\Mail\Report;
 use GuzzleHttp\Client;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 
 class ParseApartments extends Command
 {
