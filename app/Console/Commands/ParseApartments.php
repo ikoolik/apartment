@@ -80,7 +80,7 @@ class ParseApartments extends Command
         });
 
         Mail::to('ikoolik@gmail.com')->cc('mrs.irina.kulikova@gmail.com')
-            ->send(new Report(compact($apartments, $summary)));
+            ->send(new Report(['apartments' => $apartments, 'summary' => $summary]));
     }
 
     protected function fetchModelFromUrl($url)
