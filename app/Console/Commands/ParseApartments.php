@@ -49,31 +49,25 @@ class ParseApartments extends Command
     public function handle()
     {
         $summary = (object) [
-            'sold' => 0, 'booked' => 0, 'freed' => 0, 'broken' => 0, 'free' => 0
+            'free' => 0, 'sold' => 0, 'booked' => 0, 'broken' => 0
         ];
 
         $apartments = Apartment::all()->map(function (Apartment $apartment) use (&$summary) {
             $diff = $apartment->updateFromArray($this->fetchModelFromUrl($apartment->url));
             $apartment->diff = $diff;
 
-            if($apartment->state === 'свободна') {
-                $summary->free += 1;
-            }
-            if(isset($apartment->diff['state'])) {
-                switch($apartment->diff['state']) {
-                    case 'Бронь':
-                        $summary->booked += 1;
-                        break;
-                    case 'свободна':
-                        $summary->freed += 1;
-                        break;
-                    case 'Продана':
-                        $summary->sold += 1;
-                        break;
-                    default:
-                        $summary->broken += 1;
-                }
-
+            switch ($apartment->state) {
+                case 'Бронь':
+                    $summary->booked += 1;
+                    break;
+                case 'свободна':
+                    $summary->free += 1;
+                    break;
+                case 'Продана':
+                    $summary->sold += 1;
+                    break;
+                default:
+                    $summary->broken += 1;
             }
 
             return $apartment;
